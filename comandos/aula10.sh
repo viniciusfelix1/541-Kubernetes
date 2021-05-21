@@ -48,37 +48,37 @@ kubernetes(){
 
 # Habilitando repositório
   cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-  [kubernetes]
-  name=Kubernetes
-  baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-  enabled=1
-  gpgcheck=1
-  repo_gpgcheck=1
-  gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-  EOF
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
 
 # Desabilitando SELinux
-  setenforce 0
-  sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 # Instalando pacotes necessários
-  yum install -y kubelet-1.19.3 kubeadm-1.19.3 kubectl-1.19.3 --disableexcludes=kubernetes
+yum install -y kubelet-1.19.3 kubeadm-1.19.3 kubectl-1.19.3 --disableexcludes=kubernetes
 
 # Habilitando kubelet
-  systemctl enable --now kubelet
+systemctl enable --now kubelet
 
 # Configurando para o cluster usar o containerd
-  sed -ri 's,(KUBELET_EXTRA_ARGS=),\1"--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock",' /etc/sysconfig/kubelet
+sed -ri 's,(KUBELET_EXTRA_ARGS=),\1"--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock",' /etc/sysconfig/kubelet
 
 # Reiniciando kubelet
-  systemctl restart kubelet
+systemctl restart kubelet
 
 # Habilitando bash completion
-  sudo yum install bash-completion -y
-  source /usr/share/bash-completion/bash_completion
-  echo 'source <(kubectl completion bash)' >>~/.bashrc
-  echo 'source <(kubeadm completion bash)' >>~/.bashrc
-  source ~/.bashrc
+sudo yum install bash-completion -y
+source /usr/share/bash-completion/bash_completion
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+echo 'source <(kubeadm completion bash)' >>~/.bashrc
+source ~/.bashrc
 
 }
 
