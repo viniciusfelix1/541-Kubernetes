@@ -43,11 +43,8 @@ sudo systemctl restart containerd
 }
 
 kubernetes(){
-# Escalando privilegios
-  sudo su -
-
 # Habilitando repositório
-  cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+  cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
@@ -58,20 +55,20 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cl
 EOF
 
 # Desabilitando SELinux
-setenforce 0
-sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 # Instalando pacotes necessários
-yum install -y kubelet-1.19.3 kubeadm-1.19.3 kubectl-1.19.3 --disableexcludes=kubernetes
+sudo yum install -y kubelet-1.19.3 kubeadm-1.19.3 kubectl-1.19.3 --disableexcludes=kubernetes
 
 # Habilitando kubelet
-systemctl enable --now kubelet
+sudo systemctl enable --now kubelet
 
 # Configurando para o cluster usar o containerd
-sed -ri 's,(KUBELET_EXTRA_ARGS=),\1"--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock",' /etc/sysconfig/kubelet
+sudo sed -ri 's,(KUBELET_EXTRA_ARGS=),\1"--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock",' /etc/sysconfig/kubelet
 
 # Reiniciando kubelet
-systemctl restart kubelet
+sudo systemctl restart kubelet
 
 # Habilitando bash completion
 sudo yum install bash-completion -y
