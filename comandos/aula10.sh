@@ -6,7 +6,7 @@ help(){
 echo -e "Sintaxe"
 echo -e "\t$0 [OPÇÕES]\n"
 echo -e "Este script pode configurar o containerd, os componentes de um cluster do kubernetes e também o o control plane. No momento está funcinando apenas em servidores centos.\n"
-echo -e "Opções:\nconteinerd\t Irá instalar e habilitar o containerd.\nkubernetes\t Irá instalar as ferramentas kubectl, kubeadm e irá subir o kubelet.\ncontrol-plane\t Irá configurar o control plane do kubernetes através do kubeadm.\n"
+echo -e "Opções:\ncontainerd\t Irá instalar e habilitar o containerd.\nkubernetes\t Irá instalar as ferramentas kubectl, kubeadm e irá subir o kubelet.\ncontrol-plane\t Irá configurar o control plane do kubernetes através do kubeadm.\n"
 }
 
 containerd() {
