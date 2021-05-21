@@ -78,7 +78,7 @@ control-plane(){
 # Baixando imagens
 sudo kubeadm config images pull --kubernetes-version=1.20.7
 # Iniciando cluster
-sudo kubeadm init -y --pod-network-cidr=192.168.0.0/16   --apiserver-advertise-address=172.16.1.100 --kubernetes-version=1.20.7   --ignore-preflight-errors=all
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16   --apiserver-advertise-address=172.16.1.100 --kubernetes-version=1.20.7   --ignore-preflight-errors=all
 # Colocando config para comunicação com o cluster
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
